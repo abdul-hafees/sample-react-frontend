@@ -11,6 +11,7 @@ import ProtectedRoute from './components/middleware/ProtectedRoute';
 import Dashboard from './components/dashboard/Dashboard';
 import Register from './components/auth/Register';
 import Header from './layouts/Header';
+import EmployeesList from './components/employees/EmployeesList';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element:<ProtectedRoute><Header /><Dashboard /></ProtectedRoute>,
+  },
+  {
+    path: "/employees",
+    element:<ProtectedRoute><Header /><EmployeesList /></ProtectedRoute>,
   }
 ]);
 
