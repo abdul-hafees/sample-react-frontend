@@ -7,18 +7,22 @@ import { AuthContext } from "../context/AuthContext";
 
 export default function EmployeesList() {
 
-    let { token } = useContext(AuthContext);
 
     const [employees, setEmployees] = useState([]);
     const [loading, setLoading] = useState(false);
+    let { token } = useContext(AuthContext);
 
-    const fetchEmployees = () => {
-        setLoading(true);
-        axios.get('http://app.test/api/employees', {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            }
-        })
+
+
+    useEffect(() => {
+
+        const fetchEmployees = () => {
+            setLoading(true);
+            axios.get('http://app.test/api/employees', {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
             .then(
                 (response) => {
                     console.log(response.data);
@@ -32,11 +36,10 @@ export default function EmployeesList() {
                 }
             )
 
-    }
+        }
 
-    useEffect(() => {
         fetchEmployees();
-    }, []);
+    }, [token]);
 
 
     return (
@@ -61,8 +64,7 @@ export default function EmployeesList() {
                                         <td>{item.email}</td>
                                         <td>{item.phone}</td>
                                     </tr>
-                                )
-                                )
+                                ))
                             }
                         </tbody>
                     </Table>}
