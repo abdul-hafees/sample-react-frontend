@@ -56,16 +56,15 @@ export default function Login() {
 
         event.preventDefault();
 
+        setErrors({})         
+
         if (validateForm()) {
-            axios.post('http://app.test/api/login', loginFormData)
+            axios.post('/login', loginFormData)
             .then(
                 (response) => {
-                    console.log(response);
                     let accessToken = response.data.access_token;
-                    console.log(accessToken);
                     localStorage.setItem('token', accessToken);
                     setToken(accessToken);
-                    console.log("HELLO");
                     navigate('/');
                 }
             )

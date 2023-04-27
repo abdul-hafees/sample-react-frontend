@@ -12,7 +12,32 @@ import Dashboard from './components/dashboard/Dashboard';
 import Register from './components/auth/Register';
 import Header from './layouts/Header';
 import EmployeesList from './components/employees/EmployeesList';
+import axios from 'axios';
+// require('dotenv').config();
 
+
+const apiEndpoint = process.env.REACT_APP_API_URL;
+
+console.log(apiEndpoint);
+
+axios.interceptors.request.use(
+  config => {
+    config.baseURL = 'http://app.test/api/';
+    // config.withCredentials = true;
+    // axios.defaults.crossOrigin = true;
+    // axios.defaults.crossDomain = true;
+    // config.headers.post['Content-Type'] = 'application/json';
+    // config.headers.post['Accept'] = 'application/json';
+    config.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
+
+// axios.defaults.baseURL = apiEndpoint;
+// axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
