@@ -12,7 +12,7 @@ export default function GuestRoute(props) {
 
     useEffect(() => {
         if (!token) {
-            navigate('/login');
+            // navigate('/login');
             return;
         }
 

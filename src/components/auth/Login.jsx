@@ -16,6 +16,8 @@ export default function Login() {
         'password': ''
     })
 
+    const [errors, setErrors] = useState({});
+
     const handleOnChangeInput = (event) => {
         setLoginFormData(
             {
@@ -24,6 +26,29 @@ export default function Login() {
         )
     }
 
+    const validateForm = () => {
+        let errors = {};
+        let formIsValid = true;
+    
+        // Validate email
+        if (!loginFormData.email) {
+          formIsValid = false;
+          errors.email = 'Email is required';
+        } else if (!/\S+@\S+\.\S+/.test(loginFormData.email)) {
+          formIsValid = false;
+          errors.email = 'Email is invalid';
+        }
+    
+        // Validate password
+        if (!loginFormData.password) {
+          formIsValid = false;
+          errors.password = 'Password is required';
+        }
+    
+        setErrors(errors);
+        return formIsValid;
+    };
+
     const navigate = useNavigate();
     const {token, setToken} = useContext(AuthContext);
 
@@ -31,24 +56,32 @@ export default function Login() {
 
         event.preventDefault();
 
-        axios.post('http://app.test/api/login', loginFormData)
-        .then(
-            (response) => {
-                console.log(response);
-                let accessToken = response.data.access_token;
-                localStorage.setItem('token', accessToken);
-                setToken(accessToken);
-                console.log("HELLO");
-                console.log(token);
+        if (validateForm()) {
+            axios.post('http://app.test/api/login', loginFormData)
+            .then(
+                (response) => {
+                    console.log(response);
+                    let accessToken = response.data.access_token;
+                    console.log(accessToken);
+                    localStorage.setItem('token', accessToken);
+                    setToken(accessToken);
+                    console.log("HELLO");
+                    navigate('/');
+                }
+            )
+            .catch(
+                (error) => {
+                    if (error.response && error.response.data && error.response.data.message) {
+                        errors.email = error.response.data.message;
+                        setErrors(errors);
 
-                navigate('/');
-            }
-        )
-        .catch(
-            (error) => {
-                console.log(error.message);
-            }
-        )
+                        // alert(error.response.data.message);
+                    } else {
+                        alert("An unknown error occurred.");
+                    }
+                }
+            )
+        }
     };
 
     return (
@@ -64,14 +97,26 @@ export default function Login() {
                                 <Form.Group className="mb-3" >
                                     <Form.Label>Email address</Form.Label>
                                     <Form.Control type="email" placeholder="Enter email" id="email" name="email" onChange={handleOnChangeInput} />
+
                                     <Form.Text className="text-muted">
-                                        We'll never share your email with anyone else.
+                                        We'll never share your email with anyone else. <br/>
                                     </Form.Text>
+
+                                    {errors.email && (
+                                        <Form.Text className="text-danger">
+                                            {errors.email}
+                                        </Form.Text>
+                                    )}
                                 </Form.Group>
 
                                 <Form.Group className="mb-3" >
                                     <Form.Label>Password</Form.Label>
                                     <Form.Control type="password" placeholder="Password" id="password" name="password" onChange={handleOnChangeInput} />
+                                    {errors.password && (
+                                        <Form.Text className="text-danger">
+                                            {errors.password}
+                                        </Form.Text>
+                                    )}
                                 </Form.Group>
 
                                 <Button variant="primary" className="w-100 mt-3" type="submit">
