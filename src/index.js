@@ -18,8 +18,6 @@ import axios from 'axios';
 
 const apiEndpoint = process.env.REACT_APP_API_URL;
 
-console.log(apiEndpoint);
-
 axios.interceptors.request.use(
   config => {
     config.baseURL = 'http://app.test/api/';
@@ -28,7 +26,9 @@ axios.interceptors.request.use(
     // axios.defaults.crossDomain = true;
     // config.headers.post['Content-Type'] = 'application/json';
     // config.headers.post['Accept'] = 'application/json';
-    config.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+    // if (config.headers) {
+    //   config.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+    // }
     return config;
   },
   error => {

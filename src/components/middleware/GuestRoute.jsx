@@ -6,20 +6,19 @@ import { AuthContext } from "../context/AuthContext";
 export default function GuestRoute(props) {
 
     let {token,setUser} = useContext(AuthContext);
-    let accessToken = localStorage.getItem('token');
 
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!accessToken) {
-            // navigate('/login');
+        if (!token) {
+            navigate('/login');
             return;
         }
 
         axios.get('http://app.test/api/user', {
             headers:{
-                'Authorization':'Bearer ' + accessToken
+                'Authorization':'Bearer ' + token
             }
         })
         .then(
@@ -30,7 +29,7 @@ export default function GuestRoute(props) {
         )
       
     
-    },[]);
+    },[token]);
 
     return props.children
 }

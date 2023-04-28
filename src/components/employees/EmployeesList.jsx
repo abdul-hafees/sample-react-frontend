@@ -25,7 +25,6 @@ export default function EmployeesList() {
             })
             .then(
                 (response) => {
-                    console.log(response.data);
                     setEmployees(response.data);
                     setLoading(false);
                 }

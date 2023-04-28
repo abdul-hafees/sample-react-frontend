@@ -35,11 +35,9 @@ export default function Register() {
         axios.post('http://app.test/api/register', registerFormData)
             .then(
                 (response) => {
-                    console.log(response);
                     let accessToken = response.data.access_token;
                     localStorage.setItem('token', accessToken);
                     setToken(accessToken);
-                    console.log(token);
 
                     navigate('/');
                 }

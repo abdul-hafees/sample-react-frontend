@@ -10,7 +10,6 @@ export default function ProtectedRoute(props) {
     const navigate = useNavigate();
     
     useEffect(()=>{
-        console.log("access token" + token);
         if (!token) {
             navigate('/login');
             return;
@@ -29,7 +28,7 @@ export default function ProtectedRoute(props) {
         .catch(() => {navigate('/login')});
 
 
-    },[])
+    },[token])
 
 
     return (

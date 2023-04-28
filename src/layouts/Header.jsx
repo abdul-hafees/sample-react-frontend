@@ -14,8 +14,6 @@ export default function Header() {
     const logout = (event) => {
         event.preventDefault();
 
-        console.log(token);
-
         axios({
             method: 'post',
             headers: {
@@ -28,7 +26,6 @@ export default function Header() {
 
                     localStorage.setItem('token', '');
                     setToken('');
-                    console.log(token);
 
                     navigate('/login');
                 }
