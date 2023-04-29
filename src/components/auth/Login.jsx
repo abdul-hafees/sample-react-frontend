@@ -50,7 +50,7 @@ export default function Login() {
     };
 
     const navigate = useNavigate();
-    const {token, setToken} = useContext(AuthContext);
+    const {setToken} = useContext(AuthContext);
 
     const login = (event) => {
 
@@ -59,7 +59,7 @@ export default function Login() {
         setErrors({})         
 
         if (validateForm()) {
-            axios.post('/login', loginFormData)
+            axios.post('login', loginFormData)
             .then(
                 (response) => {
                     let accessToken = response.data.access_token;

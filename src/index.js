@@ -13,10 +13,11 @@ import Register from './components/auth/Register';
 import Header from './layouts/Header';
 import EmployeesList from './components/employees/EmployeesList';
 import axios from 'axios';
+import ToDoListMaster from './components/todolist/ToDoListMaster';
 // require('dotenv').config();
 
 
-const apiEndpoint = process.env.REACT_APP_API_URL;
+// const apiEndpoint = process.env.REACT_APP_API_URL;
 
 axios.interceptors.request.use(
   config => {
@@ -41,6 +42,7 @@ axios.interceptors.request.use(
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+
 const router = createBrowserRouter([
   {
     path: "/login",
@@ -57,6 +59,10 @@ const router = createBrowserRouter([
   {
     path: "/employees",
     element:<ProtectedRoute><Header /><EmployeesList /></ProtectedRoute>,
+  },
+  {
+    path: "/to-do",
+    element:<ProtectedRoute><Header /><ToDoListMaster /></ProtectedRoute>,
   }
 ]);
 

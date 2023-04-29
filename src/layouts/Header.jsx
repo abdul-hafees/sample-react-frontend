@@ -11,6 +11,7 @@ export default function Header() {
     const { user, token, setToken } = useContext(AuthContext);
     const navigate = useNavigate();
 
+
     const logout = (event) => {
         event.preventDefault();
 
@@ -45,6 +46,9 @@ export default function Header() {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link as={Link} to={'/employees'} >Employees</Nav.Link>
+                    </Nav>
+                    <Nav className="me-auto">
+                        <Nav.Link as={Link} to={'/to-do'} >To do</Nav.Link>
                     </Nav>
                     <Nav>
                         <Nav.Link >{user.name}</Nav.Link>
