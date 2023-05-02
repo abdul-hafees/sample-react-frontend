@@ -14,7 +14,8 @@ export default function EmployeesForm({
   fetchEmployees,
   employeeFormData,
   setEmployeeFormData,
-  id
+  id,
+  setId
 }) {
   const [errors, setErrors] = useState({});
 
@@ -99,6 +100,7 @@ export default function EmployeesForm({
           console.log(response.data.data);
           setShow(false);
           fetchEmployees();
+          setId('');
 
           setEmployeeFormData({
             name: "",

@@ -116,6 +116,7 @@ const EmployeesList = () => {
         setEmployeeFormData={setEmployeeFormData}
         employeeFormData={employeeFormData}
         id={id}
+        setId={setId}
       />
     </Container>
   );
