@@ -21,15 +21,15 @@ import ToDoListMaster from './components/todolist/ToDoListMaster';
 
 axios.interceptors.request.use(
   config => {
+
     config.baseURL = 'http://app.test/api/';
     // config.withCredentials = true;
     // axios.defaults.crossOrigin = true;
     // axios.defaults.crossDomain = true;
+    config.headers = config.headers || {};
     // config.headers.post['Content-Type'] = 'application/json';
     // config.headers.post['Accept'] = 'application/json';
-    // if (config.headers) {
-    //   config.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
-    // }
+    config.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token');
     return config;
   },
   error => {
