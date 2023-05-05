@@ -14,6 +14,7 @@ import Header from './layouts/Header';
 import EmployeesList from './components/employees/EmployeesList';
 import axios from 'axios';
 import ToDoListMaster from './components/todolist/ToDoListMaster';
+import DesignationList from './components/designations/DesignationList';
 // require('dotenv').config();
 
 
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
   {
     path: "/employees",
     element:<ProtectedRoute><Header /><EmployeesList /></ProtectedRoute>,
+  },
+  {
+    path: "/designations",
+    element:<ProtectedRoute><Header /><DesignationList /></ProtectedRoute>,
   },
   {
     path: "/to-do",

@@ -90,7 +90,6 @@ export default function EmployeesForm({
     setErrors({});
 
     if (validateForm()) {
-      console.log('form-data' + employeeFormData);
       axios({
         method: id ? "put" : 'post',
         url: id ? `employees/${id}` : 'employees',
