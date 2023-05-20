@@ -15,19 +15,28 @@ export default function EmployeesForm({
   employeeFormData,
   setEmployeeFormData,
   id,
-  setId
+  setId,
 }) {
   const [errors, setErrors] = useState({});
 
   const handleOnChangeInput = (event) => {
-    setEmployeeFormData({
-      ...employeeFormData,
-      [event.target.name]: event.target.value,
-    });
+    if (event.target.type === 'file') {
+      console.log("IMAGE");
+      setEmployeeFormData({
+        ...employeeFormData,
+        image: event.target.files[0],
+      });
+    } else {
+      setEmployeeFormData({
+        ...employeeFormData,
+        [event.target.name]: event.target.value,
+      });
+    }
   };
 
   const handleClose = () => {
     setShow(false);
+    setId("");
     setErrors({});
   };
 
@@ -62,26 +71,26 @@ export default function EmployeesForm({
 
   const editEmployee = () => {
     axios
-    .get("employees/" + id)
-    .then((response) => {
-      const data = response.data.data;
-      setEmployeeFormData({
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
+      .get("employees/" + id)
+      .then((response) => {
+        const data = response.data.data;
+        setEmployeeFormData({
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          image_url: data.image_url,
+        });
+        setShow(true);
+      })
+      .catch((response) => {
+        console.log(response);
       });
-      setShow(true);
-    })
-    .catch((response) => {
-      console.log(response);
-    });
-  }
+  };
 
   useEffect(() => {
-    if(id) {
-      editEmployee()
+    if (id) {
+      editEmployee();
     }
-
   }, [id]);
 
   const storeEmployee = (event) => {
@@ -90,22 +99,22 @@ export default function EmployeesForm({
     setErrors({});
 
     if (validateForm()) {
+      console.log(employeeFormData)
       axios({
-        method: id ? "put" : 'post',
-        url: id ? `employees/${id}` : 'employees',
+        method: id ? "put" : "post",
+        url: id ? `employees/${id}` : "employees",
         data: employeeFormData,
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
       })
         .then((response) => {
           console.log(response.data.data);
           setShow(false);
           fetchEmployees();
-          setId('');
+          setId("");
 
-          setEmployeeFormData({
-            name: "",
-            email: "",
-            phone: "",
-          });
+          setEmployeeFormData({});
         })
         .catch((error) => {
           if (
@@ -132,9 +141,13 @@ export default function EmployeesForm({
       placement="end"
     >
       <Offcanvas.Header closeButton>
-        <Offcanvas.Title>Add Employee</Offcanvas.Title>
+        <Offcanvas.Title>{id ? "Edit" : "Create"} Employee</Offcanvas.Title>
       </Offcanvas.Header>
       <Offcanvas.Body>
+        {id &&  <div style={{ display: 'flex', justifyContent: 'center'}}>
+          <img src={employeeFormData.image_url} style={{ width: '100px', height: '100px', objectFit: 'cover' }}/>
+        </div> }
+       
         <Form onSubmit={storeEmployee}>
           <Form.Group className="mb-3">
             <Form.Label>Password</Form.Label>
@@ -180,6 +193,10 @@ export default function EmployeesForm({
             {errors.phone && (
               <Form.Text className="text-danger">{errors.phone}</Form.Text>
             )}
+          </Form.Group>
+          <Form.Group controlId="formFile" className="mb-3">
+            <Form.Label>Choose Image</Form.Label>
+            <Form.Control type="file" onChange={handleOnChangeInput}/>
           </Form.Group>
 
           <Button variant="primary" className="w-100 mt-3" type="submit">

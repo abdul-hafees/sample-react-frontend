@@ -101,7 +101,7 @@ const DesignationForm = ({show, setShow, id, setId, fetchDesignations}) => {
         placement="end"
       >
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Add Designation</Offcanvas.Title>
+          <Offcanvas.Title>{id ? 'Edit' : 'Add'} Designation</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Form onSubmit={storeDesignation}>

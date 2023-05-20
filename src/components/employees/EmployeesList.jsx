@@ -30,6 +30,8 @@ const EmployeesList = () => {
       name: "",
       email: "",
       phone: "",
+      image: null,
+      image_url: ""
     });
   };
 
@@ -97,6 +99,8 @@ const EmployeesList = () => {
                     <th>Name</th>
                     <th>Email</th>
                     <th>Mobile</th>
+                    <th></th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -105,6 +109,7 @@ const EmployeesList = () => {
                       <td>{item.name}</td>
                       <td>{item.email}</td>
                       <td>{item.phone}</td>
+                      <td><img src={item.image_url} width={50} height={50}/></td>
                       <td>
                         <FaEdit
                           className="danger"
