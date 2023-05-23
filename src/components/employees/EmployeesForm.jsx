@@ -11,33 +11,38 @@ import Form from "react-bootstrap/Form";
 export default function EmployeesForm({
   show,
   setShow,
-  fetchEmployees,
-  employeeFormData,
-  setEmployeeFormData,
   id,
   setId,
+  fetchEmployees,
 }) {
   const [errors, setErrors] = useState({});
+  const [employeeFormData, setEmployeeFormData] = useState({
+    'name': "",
+    'email': "",
+    'phone': "",
+    'image': null,
+  });
+
+  const handleClose = () => {
+    setShow(false);
+    // setId("");
+    // setErrors({});
+    setEmployeeFormData({});
+  };
 
   const handleOnChangeInput = (event) => {
     if (event.target.type === 'file') {
-      console.log("IMAGE");
       setEmployeeFormData({
         ...employeeFormData,
         image: event.target.files[0],
       });
     } else {
+      console.log(event.target.value)
       setEmployeeFormData({
         ...employeeFormData,
         [event.target.name]: event.target.value,
       });
     }
-  };
-
-  const handleClose = () => {
-    setShow(false);
-    setId("");
-    setErrors({});
   };
 
   const validateForm = () => {
@@ -66,32 +71,9 @@ export default function EmployeesForm({
     }
 
     setErrors(errors);
+    console.log(employeeFormData)
     return formIsValid;
   };
-
-  const editEmployee = () => {
-    axios
-      .get("employees/" + id)
-      .then((response) => {
-        const data = response.data.data;
-        setEmployeeFormData({
-          name: data.name,
-          email: data.email,
-          phone: data.phone,
-          image_url: data.image_url,
-        });
-        setShow(true);
-      })
-      .catch((response) => {
-        console.log(response);
-      });
-  };
-
-  useEffect(() => {
-    if (id) {
-      editEmployee();
-    }
-  }, [id]);
 
   const storeEmployee = (event) => {
     event.preventDefault();
@@ -100,8 +82,11 @@ export default function EmployeesForm({
 
     if (validateForm()) {
       console.log(employeeFormData)
+      if (id) {
+        employeeFormData['_method'] = 'PUT'
+      }
       axios({
-        method: id ? "put" : "post",
+        method: "post",
         url: id ? `employees/${id}` : "employees",
         data: employeeFormData,
         headers: {
@@ -109,7 +94,7 @@ export default function EmployeesForm({
         }
       })
         .then((response) => {
-          console.log(response.data.data);
+          // console.log(response.data.data);
           setShow(false);
           fetchEmployees();
           setId("");
@@ -132,6 +117,32 @@ export default function EmployeesForm({
         });
     }
   };
+
+  const fetchEmployee = () => {
+    axios
+      .get("employees/" + id)
+      .then((response) => {
+        const data = response.data.data;
+        setEmployeeFormData({
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          image_url: data.image_url,
+        });
+        setShow(true);
+      })
+      .catch((response) => {
+        console.log(response);
+      });
+  };
+
+  useEffect(() => {
+    if (id) {
+      fetchEmployee();
+    }
+  }, [id]);
+
+
 
   return (
     <Offcanvas
@@ -202,7 +213,7 @@ export default function EmployeesForm({
           <Button variant="primary" className="w-100 mt-3" type="submit">
             Submit
           </Button>
-        </Form>{" "}
+        </Form>
       </Offcanvas.Body>
     </Offcanvas>
   );

@@ -11,29 +11,13 @@ import EmployeesForm from "./EmployeesForm";
 import ReactPaginate from "react-paginate";
 
 const EmployeesList = () => {
-  const [employeeFormData, setEmployeeFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-  });
 
-  const [id, setId] = useState("");
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState(false);
+  const [id, setId] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [lastPage, setLastPage] = useState("");
-  const [show, setShow] = useState(false);
-
-  const handleShow = () => {
-    setShow(true);
-    setEmployeeFormData({
-      name: "",
-      email: "",
-      phone: "",
-      image: null,
-      image_url: ""
-    });
-  };
 
   const fetchEmployees = (page = 1) => {
     axios
@@ -46,6 +30,19 @@ const EmployeesList = () => {
       .catch((response) => {
         console.log(response);
       });
+  };
+
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
+
+  const handleShow = () => {
+    setShow(true);
+  };
+
+  const editEmployee = (id) => {
+    setId(id);
+    setShow(true);
   };
 
   const deleteEmployee = (id) => {
@@ -63,19 +60,9 @@ const EmployeesList = () => {
     }
   };
 
-  const editEmployee = (id) => {
-    setId(id);
-  };
-
-  useEffect(() => {
-    fetchEmployees();
-  }, []);
-
   const handlePageClick = (data) => {
-      setCurrentPage(data.selected);
-
-      const selectedPage = data.selected + 1;
-
+    setCurrentPage(data.selected);
+    const selectedPage = data.selected + 1;
     fetchEmployees(selectedPage);
   };
 
@@ -151,11 +138,9 @@ const EmployeesList = () => {
       <EmployeesForm
         show={show}
         setShow={setShow}
-        fetchEmployees={fetchEmployees}
-        setEmployeeFormData={setEmployeeFormData}
-        employeeFormData={employeeFormData}
         id={id}
         setId={setId}
+        fetchEmployees={fetchEmployees}
       />
     </Container>
   );
