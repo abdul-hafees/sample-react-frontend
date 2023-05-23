@@ -25,8 +25,8 @@ export default function EmployeesForm({
 
   const handleClose = () => {
     setShow(false);
-    // setId("");
-    // setErrors({});
+    setId("");
+    setErrors({});
     setEmployeeFormData({});
   };
 
